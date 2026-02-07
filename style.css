@@ -1,0 +1,196 @@
+/*  Body & Layout  */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #f4f7f6, #e0f7fa);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    color: #333;
+}
+
+/*  Header  */
+.app-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #007bff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/*  Form Styling */
+form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    flex: 1;
+    min-width: 200px;
+    font-size: 16px;
+}
+
+select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+/* Adding Button */
+form button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+}
+
+form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Clearing Completed Button */
+#clear-completed {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+#clear-completed:hover {
+    background-color: #5a6268;
+}
+
+/*  Todo List Styling */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    width: 100%;
+    max-width: 500px;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Todo text */
+li span {
+    flex: 1;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Completed todo -  faded backgroun */
+li span.completed {
+    text-decoration: line-through;
+    color: #6c757d;
+    opacity: 0.7;
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Priority badges */
+.priority-badge {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 12px;
+    color: #fff;
+}
+
+.priority-high {
+    background-color: #dc3545;
+}
+
+/* red */
+.priority-medium {
+    background-color: #fd7e14;
+}
+
+/* orange */
+.priority-low {
+    background-color: #28a745;
+}
+
+/* green */
+
+/* Completing button */
+.complete-btn.green {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.complete-btn.gray {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.complete-btn:hover {
+    opacity: 0.85;
+}
+
+/* Deleting Button */
+.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    form {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    li span {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+
+.app-footer {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+}

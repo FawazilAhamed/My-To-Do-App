@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1 class="app-title">📝 MY TODO APP</h1>
+    
+
+    <form id="todo-form">
+        <input id="todo-input" placeholder="Add a new todo..." required />
+
+        <select id="todo-priority">
+            <option value="High">High</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Low">Low</option>
+        </select>
+
+        <button type="submit">Add</button>
+        <button type="button" id="clear-completed">Clear Completed</button>
+    </form>
+
+    <ul id="todo-list"></ul>
+
+    <script>
+        async function loadTodos() {
+            const res = await fetch('/todos');
+            const todos = await res.json();
+
+            const list = document.getElementById('todo-list');
+            list.innerHTML = '';
+
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+
+                // Todo text
+                const text = document.createElement('span');
+                text.textContent = todo.title;
+
+                // Priority badge
+                const badge = document.createElement('span');
+                badge.className = 'priority-badge ' +
+                    (todo.priority === 'High' ? 'priority-high' :
+                        todo.priority === 'Medium' ? 'priority-medium' :
+                            'priority-low');
+                badge.textContent = todo.priority;
+
+                text.appendChild(badge);
+                text.classList.toggle('completed', todo.completed);
+
+                // Complete button
+                const completeBtn = document.createElement('button');
+                completeBtn.className = 'complete-btn ' + (todo.completed ? 'gray' : 'green');
+                completeBtn.textContent = todo.completed ? 'Undo' : 'Complete';
+
+                completeBtn.addEventListener('click', async () => {
+                  
+                    todo.completed = !todo.completed;
+                    text.classList.toggle('completed', todo.completed);
+                    completeBtn.textContent = todo.completed ? 'Undo' : 'Complete';
+                    completeBtn.className = 'complete-btn ' + (todo.completed ? 'gray' : 'green');
+
+                    // updating the backend
+                    try {
+                        await fetch('/todos/' + todo.id, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ completed: todo.completed })
+                        });
+                    } catch (err) {
+                        console.error('Error updating todo:', err);
+                    }
+                });
+
+                // Deleting  button
+                const del = document.createElement('button');
+                del.textContent = 'Delete';
+                del.className = 'delete-btn';
+                del.addEventListener('click', async () => {
+                    await fetch('/todos/' + todo.id, { method: 'DELETE' });
+                    loadTodos();
+                });
+
+                li.appendChild(text);
+                li.appendChild(completeBtn);
+                li.appendChild(del);
+                list.appendChild(li);
+            });
+        }
+
+        // Adding a new todo
+        document.getElementById('todo-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const input = document.getElementById('todo-input');
+            const priority = document.getElementById('todo-priority').value;
+
+            await fetch('/todos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: input.value, priority })
+            });
+
+            input.value = '';
+            loadTodos();
+        });
+
+        // Allowing to press Enter when  input is adding  todo
+        document.getElementById('todo-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('todo-form').dispatchEvent(
+                    new Event('submit', { cancelable: true, bubbles: true })
+                );
+            }
+        });
+
+        // Clearing completed todos
+        document.getElementById('clear-completed').addEventListener('click', async () => {
+            await fetch('/todos/completed', { method: 'DELETE' });
+            loadTodos();
+        });
+
+        // Initial load
+        loadTodos();
+    </script>
+<footer class="app-footer">
+    © 2026 Fawazil Ahamed
+</footer>
+
+</body>
+
+</html>
